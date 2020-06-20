@@ -46,10 +46,10 @@ print(paste("Median =", median(total$total)))
 ## Time series plot of the average number of steps taken
 
 ```r
-aver <- activity %>%
-        group_by(date) %>%
-        summarize(aver=mean(steps, na.rm=TRUE))
-plot(as.Date(aver$date), aver$aver, type="l", xlab="Date", ylab="Average Steps per 5 min")
+aver_5min <- activity %>%
+             group_by(interval) %>%
+             summarize(aver=mean(steps, na.rm=TRUE))
+plot(aver_5min$interval, aver_5min$aver, type="l", xlab="interval", ylab="Average Steps")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
@@ -57,9 +57,6 @@ plot(as.Date(aver$date), aver$aver, type="l", xlab="Date", ylab="Average Steps p
 ## The 5-minute interval that, on average, contains the maximum number of steps
 
 ```r
-aver_5min <- activity %>%
-             group_by(interval) %>%
-             summarize(aver=mean(steps, na.rm=TRUE))
 aver_5min[which.max(aver_5min$aver),]
 ```
 
@@ -128,7 +125,7 @@ aver_5min_wd <- activity_imputed %>%
 
 g <- ggplot(aver_5min_wd, aes(interval, aver, col=wkend))
 g + geom_line() + facet_grid(wkend~.) + 
-    labs(y="Average steps", col="")
+    labs(y="Average steps") + theme(legend.position="none")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
